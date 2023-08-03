@@ -1,6 +1,5 @@
 // import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-
 import { request } from '../../axios_helper';
 import ModalAgreagarProveedor from './ModalAgreagarProveedor';
 
@@ -9,17 +8,6 @@ export default function ListadoProvedores(props) {
 
     //useSatate para listar proveedores
     const [proveedores, setProveedores] = useState ([]);
-
-    //useState para guardar el proveedor
-    const [proveedor, setProveedor] = useState({
-        nombreProveedor:"",
-        direccionProveedor:"",
-        telefonoProveedor:""
-    });
-
-    //inicializar varibles 
-    const{nombreProveedor,direccionProveedor,telefonoProveedor} = proveedor;
-
     
        
     useEffect(() => {
@@ -37,39 +25,13 @@ export default function ListadoProvedores(props) {
         ).then((response) => {
             console.log(response);
             setProveedores(response.data);
-            console.log(proveedores);
 
         }).catch((error) => {
             console.log(error);
         })
     }
 
-    const onInputChange = (e) => {
-        //spread operator ...(expandir los eventos)
-        setProveedor({...proveedor,[e.target.name]: e.target.value});
-
-    }
-
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        console.log(proveedor);
-        await request(
-            "POST",
-            "/proveedor",
-            proveedor
-        ).then((response) => {
-            console.log(response);
-            cargarProveedores();
-            setProveedor({
-                nombreProveedor:"",
-                direccionProveedor:"",
-                telefonoProveedor:""
-            })
-
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
+    
 
   return (
 
@@ -149,7 +111,7 @@ export default function ListadoProvedores(props) {
         </section>
 
         {/* Modal Agregar Nuevo proveedor */}
-        <ModalAgreagarProveedor onInputChange={onInputChange} onSubmit={onSubmit} proveedor={proveedor}/>
+        <ModalAgreagarProveedor cargarProveedores={cargarProveedores}/>
 
     </div>
   )
