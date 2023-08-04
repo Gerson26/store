@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {  useState, useEffect  } from 'react'
 import { request } from '../../axios_helper';
 import Swal from 'sweetalert2';
 import $ from 'jquery'; 
@@ -6,20 +6,24 @@ import $ from 'jquery';
 
 
 
-export default function ModalAgreagarProveedor(props) {
+export default function ModalEditarProveedor(props) {
 
 
-    const initialProveedorState = {
-        nombreProveedor:"",
-        direccionProveedor:"",
-        telefonoProveedor:""
-    }
+    // const initialProveedorState = {
+    //     nombreProveedor:"",
+    //     direccionProveedor:"",
+    //     telefonoProveedor:""
+    // }
     
     //useState para guardar el proveedor
-    const [proveedor, setProveedor] = useState(initialProveedorState);
+    const [proveedor, setProveedor] = useState([]);
+
+    useEffect(() => {
+        setProveedor(props.proveedor);
+    },[props.proveedor]);
 
     //inicializar varibles 
-    const{nombreProveedor,direccionProveedor,telefonoProveedor} = proveedor;
+    const{idProveedor,nombreProveedor,direccionProveedor,telefonoProveedor} = proveedor;
 
     const onInputChange = (e) => {
         //spread operator ...(expandir los eventos)
@@ -28,23 +32,27 @@ export default function ModalAgreagarProveedor(props) {
     }
 
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e,id) => {
         e.preventDefault();
-        console.log(proveedor);
+       
         await request(
-            "POST",
-            "/proveedor",
+            "PUT",
+            `proveedor/${id}`,
             proveedor
         ).then((response) => {
             console.log(response);
             props.cargarProveedores();
-            setProveedor(initialProveedorState);
+            setProveedor({
+                nombreProveedor:"",
+                direccionProveedor:"",
+                telefonoProveedor:""
+            });
             //Proveedor Creado
             Toast.fire({
                 icon: 'success',
-                title: 'Proveedor creado correctamente.'
+                title: 'Proveedor editado correctamente.'
             })
-            document.querySelector('.close-modal').click();
+            document.querySelector('.close-modal-d').click();
 
         }).catch((error) => {
             console.log(error);
@@ -60,12 +68,12 @@ export default function ModalAgreagarProveedor(props) {
     });
     
   return (
-    <div className="modal fade" id="modal-default">
+    <div className="modal fade" id="modal-edit-proveedor">
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <form onSubmit={(e) => onSubmit(e)}>
+                    <form onSubmit={(e) => onSubmit(e,idProveedor)}>
                         <div className="modal-header">
-                            <h4 className="modal-title">Registrar Proveedor</h4>
+                            <h4 className="modal-title">Editar Proveedor</h4>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                             </button>
@@ -87,8 +95,8 @@ export default function ModalAgreagarProveedor(props) {
                             
                         </div>
                         <div className="modal-footer justify-content-between">
-                            <button type="button" className="btn btn-default close-modal" data-dismiss="modal">Close</button>
-                            <button type="submit" className="btn btn-primary">Guardar</button>
+                            <button type="button" className="btn btn-default close-modal-d" data-dismiss="modal">Close</button>
+                            <button type="submit" className="btn btn-primary">Actualizar</button>
                         </div>
                     </form>
                 </div>

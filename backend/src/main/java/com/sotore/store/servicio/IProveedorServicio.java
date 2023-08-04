@@ -8,7 +8,7 @@ public interface IProveedorServicio {
 
     public List<Proveedor> listarProveedores();
 
-    public Proveedor buscarProveedorPorId();
+    public Proveedor buscarProveedorPorId(Integer idProveedor);
 
     //funciona como metodo de guardado y de actualizar dependiendo si el id viene nulo
     public Proveedor guardarProveedor(Proveedor proveedor);

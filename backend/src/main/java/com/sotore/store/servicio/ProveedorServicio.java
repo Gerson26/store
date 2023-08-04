@@ -20,8 +20,9 @@ public class ProveedorServicio implements IProveedorServicio{
     }
 
     @Override
-    public Proveedor buscarProveedorPorId() {
-        return null;
+    public Proveedor buscarProveedorPorId(Integer idProveedor) {
+        Proveedor proveedor = proveedorRepositorio.findById(idProveedor).orElse(null);
+        return proveedor;
     }
 
     @Override

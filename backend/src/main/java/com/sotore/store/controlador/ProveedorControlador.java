@@ -1,10 +1,12 @@
 package com.sotore.store.controlador;
 
+import com.sotore.store.excepcion.RecursoNoEncontradoExcepcion;
 import com.sotore.store.modelo.Proveedor;
 import com.sotore.store.servicio.ProveedorServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -42,6 +44,25 @@ public class ProveedorControlador {
         proveedor.setFechaRegistroProveedor(fechaRegistroProveedor);
         logger.info("Proveedor a agregar: " + proveedor);
         return proveedorServicio.guardarProveedor(proveedor);
+    }
 
+    @GetMapping("/proveedor/{id}")
+    public ResponseEntity<Proveedor> obtenerProveedorPorId(@PathVariable Integer id){
+        Proveedor proveedor = proveedorServicio.buscarProveedorPorId(id);
+        if (proveedor == null) throw new RecursoNoEncontradoExcepcion("No se encontro el id: "+id);
+        return  ResponseEntity.ok(proveedor);
+
+    }
+
+    @PutMapping("/proveedor/{id}")
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Integer id, @RequestBody Proveedor proveedorRecibido){
+        Proveedor proveedor = proveedorServicio.buscarProveedorPorId(id);
+        if (proveedor == null) throw new RecursoNoEncontradoExcepcion("El id recibido no existe: "+id);
+        proveedor.setNombreProveedor(proveedorRecibido.getNombreProveedor());
+        proveedor.setDireccionProveedor(proveedorRecibido.getDireccionProveedor());
+        proveedor.setTelefonoProveedor(proveedorRecibido.getTelefonoProveedor());
+
+        proveedorServicio.guardarProveedor(proveedor);
+        return ResponseEntity.ok(proveedor);
     }
 }
