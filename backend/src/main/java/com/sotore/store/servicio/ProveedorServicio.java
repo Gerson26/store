@@ -32,6 +32,6 @@ public class ProveedorServicio implements IProveedorServicio{
 
     @Override
     public void eliminarProveedor(Proveedor proveedor) {
-
+        proveedorRepositorio.delete(proveedor);
     }
 }

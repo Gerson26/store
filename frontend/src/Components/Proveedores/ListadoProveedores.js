@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { request } from '../../axios_helper';
 import ModalAgreagarProveedor from './ModalAgreagarProveedor';
 import ModalEditarProveedor from './ModalEditarProveedor';
+import Swal from 'sweetalert2';
+import moment from 'moment/moment';
 
 export default function ListadoProvedores(props) {
 
@@ -21,16 +23,17 @@ export default function ListadoProvedores(props) {
         // console.log("Resultado cargar proveedores");
         // console.log(resultado.data);
         // setProveedores(resultado.data);
-        await request(
-            "GET",
-            "/proveedores"
-        ).then((response) => {
-            console.log(response);
-            setProveedores(response.data);
-
-        }).catch((error) => {
-            console.log(error);
-        })
+            await request(
+                "GET",
+                "/proveedores"
+            ).then((response) => {
+                console.log(response);
+                setProveedores(response.data);
+    
+            }).catch((error) => {
+                console.log(error);
+            })
+        
     }
 
     const cargarProveedor = async (id) => {
@@ -55,6 +58,54 @@ export default function ListadoProvedores(props) {
         // cargarEmpleados();
         cargarProveedor(id);
       
+    }
+
+    const onDeleteProveedor = async (id) => {
+        await request(
+            "DELETE",
+            `proveedor/${id}`
+        ).then((response) => {
+            console.log(response);
+            Swal.fire(
+                'Eliminado!',
+                'El proveedor ha sido eliminado!.',
+                'success'
+            )
+            cargarProveedores();
+
+        }).catch((error) => {
+            console.log(error);
+            Toast.fire({
+                icon: 'error',
+                title: 'Proveedor creado correctamente.'
+            })
+        })
+    }
+
+    //Sweet alert configuration
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
+    const onClickDeleteProveedor = (e,id) => {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Estas Seguro de Eliminar el Poveedor?',
+            text: "No sera posible revertir la acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {
+                onDeleteProveedor(id);              
+            }
+          })
     }
 
     
@@ -112,15 +163,16 @@ export default function ListadoProvedores(props) {
                         <tbody>
                             
                         {proveedores.map((proveedor, indice) => (
+                            
                             <tr key={indice}>
                                 <td>{proveedor.idProveedor}</td>
                                 <td>{proveedor.nombreProveedor}</td>
                                 <td>{proveedor.direccionProveedor}</td>
                                 <td>{proveedor.telefonoProveedor}</td>
-                                <td>{proveedor.fechaRegistroProveedor}</td>
+                                <td>{(proveedor.fechaRegistroProveedor)}</td>
                                 <td>
                                     <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-proveedor" onClick={()=>editarProveedor(proveedor.idProveedor)}><i class="fas far fa-edit"></i></button>
-                                    <button type="button" class="btn btn-inline-block btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    <button type="button" class="btn btn-inline-block btn-danger btn-sm" onClick={(e) => onClickDeleteProveedor(e,proveedor.idProveedor)}><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         ))}

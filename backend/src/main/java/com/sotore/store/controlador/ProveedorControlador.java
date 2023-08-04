@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/store") //puede que se tenga que configurar diferente si se utiliza el jwt
@@ -64,5 +66,19 @@ public class ProveedorControlador {
 
         proveedorServicio.guardarProveedor(proveedor);
         return ResponseEntity.ok(proveedor);
+    }
+
+    @DeleteMapping("/proveedor/{id}")
+    public ResponseEntity<Map<String, Boolean>> eliminarProveedor(@PathVariable Integer id){
+        Proveedor proveedor = proveedorServicio.buscarProveedorPorId(id);
+        if(proveedor == null) throw new RecursoNoEncontradoExcepcion("El id recibido no existe: "+id);
+
+        proveedorServicio.eliminarProveedor(proveedor);
+        //respuesta Json{"eliminado":"true"}
+
+        Map<String, Boolean> respuesta = new HashMap<>();
+        respuesta.put("eliminado",Boolean.TRUE);
+        return ResponseEntity.ok(respuesta);
+
     }
 }

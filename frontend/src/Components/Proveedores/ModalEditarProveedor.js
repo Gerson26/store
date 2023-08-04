@@ -16,18 +16,19 @@ export default function ModalEditarProveedor(props) {
     // }
     
     //useState para guardar el proveedor
-    const [proveedor, setProveedor] = useState([]);
+    const [proveedorEdit, setProveedorEdit] = useState([]);
 
     useEffect(() => {
-        setProveedor(props.proveedor);
+        setProveedorEdit(props.proveedor);
     },[props.proveedor]);
 
     //inicializar varibles 
-    const{idProveedor,nombreProveedor,direccionProveedor,telefonoProveedor} = proveedor;
+    const{idProveedor,nombreProveedor,direccionProveedor,telefonoProveedor} = proveedorEdit;
 
     const onInputChange = (e) => {
         //spread operator ...(expandir los eventos)
-        setProveedor({...proveedor,[e.target.name]: e.target.value});
+        setProveedorEdit({...proveedorEdit,[e.target.name]: e.target.value});
+        console.log(proveedorEdit);
 
     }
 
@@ -38,11 +39,11 @@ export default function ModalEditarProveedor(props) {
         await request(
             "PUT",
             `proveedor/${id}`,
-            proveedor
+            proveedorEdit
         ).then((response) => {
             console.log(response);
             props.cargarProveedores();
-            setProveedor({
+            setProveedorEdit({
                 nombreProveedor:"",
                 direccionProveedor:"",
                 telefonoProveedor:""
@@ -52,12 +53,14 @@ export default function ModalEditarProveedor(props) {
                 icon: 'success',
                 title: 'Proveedor editado correctamente.'
             })
-            document.querySelector('.close-modal-d').click();
+            document.querySelector('.close-modal-edit').click();
 
         }).catch((error) => {
             console.log(error);
         })
     }
+
+   
 
     //Sweet alert configuration
     const Toast = Swal.mixin({
@@ -95,7 +98,7 @@ export default function ModalEditarProveedor(props) {
                             
                         </div>
                         <div className="modal-footer justify-content-between">
-                            <button type="button" className="btn btn-default close-modal-d" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-default close-modal-edit" data-dismiss="modal">Close</button>
                             <button type="submit" className="btn btn-primary">Actualizar</button>
                         </div>
                     </form>
