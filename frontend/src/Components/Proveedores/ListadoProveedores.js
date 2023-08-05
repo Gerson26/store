@@ -5,6 +5,7 @@ import ModalAgreagarProveedor from './ModalAgreagarProveedor';
 import ModalEditarProveedor from './ModalEditarProveedor';
 import Swal from 'sweetalert2';
 import moment from 'moment/moment';
+import 'moment/locale/es';
 
 export default function ListadoProvedores(props) {
 
@@ -163,13 +164,12 @@ export default function ListadoProvedores(props) {
                         <tbody>
                             
                         {proveedores.map((proveedor, indice) => (
-                            
                             <tr key={indice}>
                                 <td>{proveedor.idProveedor}</td>
                                 <td>{proveedor.nombreProveedor}</td>
                                 <td>{proveedor.direccionProveedor}</td>
                                 <td>{proveedor.telefonoProveedor}</td>
-                                <td>{(proveedor.fechaRegistroProveedor)}</td>
+                                <td>{moment(new Date(proveedor.fechaRegistroProveedor)).format('LLL')}</td>
                                 <td>
                                     <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-proveedor" onClick={()=>editarProveedor(proveedor.idProveedor)}><i class="fas far fa-edit"></i></button>
                                     <button type="button" class="btn btn-inline-block btn-danger btn-sm" onClick={(e) => onClickDeleteProveedor(e,proveedor.idProveedor)}><i class="fas fa-trash"></i></button>

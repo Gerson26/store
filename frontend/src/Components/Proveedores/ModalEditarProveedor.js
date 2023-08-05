@@ -7,13 +7,6 @@ import $ from 'jquery';
 
 
 export default function ModalEditarProveedor(props) {
-
-
-    // const initialProveedorState = {
-    //     nombreProveedor:"",
-    //     direccionProveedor:"",
-    //     telefonoProveedor:""
-    // }
     
     //useState para guardar el proveedor
     const [proveedorEdit, setProveedorEdit] = useState([]);
@@ -43,12 +36,8 @@ export default function ModalEditarProveedor(props) {
         ).then((response) => {
             console.log(response);
             props.cargarProveedores();
-            setProveedorEdit({
-                nombreProveedor:"",
-                direccionProveedor:"",
-                telefonoProveedor:""
-            });
-            //Proveedor Creado
+            setProveedorEdit([]);
+            //Proveedor Editado
             Toast.fire({
                 icon: 'success',
                 title: 'Proveedor editado correctamente.'
@@ -85,15 +74,15 @@ export default function ModalEditarProveedor(props) {
                         <div className="modal-body">                            
                             <div className="mb-3">
                                 <label htmlFor="nombreProveedor" className="form-label">Nombre</label>
-                                <input type="text" className="form-control" id="nombreProveedor" name="nombreProveedor" required={true} value={nombreProveedor} onChange={(e)=>onInputChange(e)}/>
+                                <input type="text" className="form-control" id="nombreProveedor" name="nombreProveedor" required={true} value={nombreProveedor || ''} onChange={(e)=>onInputChange(e)}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="direccionProveedor" className="form-label">Dirección</label>
-                                <input type="text" className="form-control" id="direccionProveedor" name="direccionProveedor" value={direccionProveedor} onChange={(e) => onInputChange(e)}/>
+                                <input type="text" className="form-control" id="direccionProveedor" name="direccionProveedor" value={direccionProveedor || ''} onChange={(e) => onInputChange(e)}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="telefonoProveedor" className="form-label">Teléfono</label>
-                                <input type="number" step="any" className="form-control" id="telefonoProveedor" name="telefonoProveedor" value={telefonoProveedor} onChange={(e) => onInputChange(e)}/>
+                                <input type="number" step="any" className="form-control" id="telefonoProveedor" name="telefonoProveedor" value={telefonoProveedor || ''} onChange={(e) => onInputChange(e)}/>
                             </div>
                             
                         </div>
