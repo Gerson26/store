@@ -1,14 +1,15 @@
 // import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { request } from '../../axios_helper';
-import ModalAgreagarProveedor from './ModalAgreagarProveedor';
-import ModalEditarProveedor from './ModalEditarProveedor';
+// import ModalAgreagarProveedor from './ModalAgreagarProveedor';
+// import ModalEditarProveedor from './ModalEditarProveedor';
 import Swal from 'sweetalert2';
 import moment from 'moment/moment';
 import 'moment/locale/es';
 import $ from 'jquery'; 
+import ModalAgregarProducto from './ModalAgregarProducto';
 
-export default function ListadoProvedores(props) {
+export default function ListadoProductos(props) {
 
 
     //useSatate para listar proveedores
@@ -147,7 +148,7 @@ export default function ListadoProvedores(props) {
                             </div>
                             <div className='col-md-6 d-flex justify-content-end' >
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
-                                    <i class="fas fa-solid fa-plus"></i> Agregar Proveedor
+                                    <i class="fas fa-solid fa-plus"></i> Agregar Producto
                                 </button>
                             </div>
 
@@ -158,12 +159,10 @@ export default function ListadoProvedores(props) {
                     <div className="card-body">
                         <table id="example1" className="table table-bordered table-striped">
                         <thead>
-                            <tr>
-                            <th>#</th>
+                            <tr>                           
+                            <th>IMG</th>
                             <th>Nombre</th>
-                            <th>Dirección</th>
-                            <th>Teléfono</th>
-                            <th>Fecha de registro</th>
+                            <th>Status</th>
                             <th>Acciones</th>
                             </tr>
                         </thead>
@@ -174,8 +173,8 @@ export default function ListadoProvedores(props) {
                                 <td>{proveedor.idProveedor}</td>
                                 <td>{proveedor.nombreProveedor}</td>
                                 <td>{proveedor.direccionProveedor}</td>
-                                <td>{proveedor.telefonoProveedor}</td>
-                                <td>{moment(new Date(proveedor.fechaRegistroProveedor)).format('LLL')}</td>
+                                
+                              
                                 <td>
                                     <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-proveedor" onClick={()=>editarProveedor(proveedor.idProveedor)}><i class="fas far fa-edit"></i></button>
                                     <button type="button" class="btn btn-inline-block btn-danger btn-sm" onClick={(e) => onClickDeleteProveedor(e,proveedor.idProveedor)}><i class="fas fa-trash"></i></button>
@@ -197,11 +196,11 @@ export default function ListadoProvedores(props) {
             {/* /.container-fluid */}
         </section>
 
-        {/* Modal Agregar Nuevo proveedor */}
-        <ModalAgreagarProveedor cargarProveedores={cargarProveedores}/>
+        {/* Modal Agregar Nuevo producto */}
+        <ModalAgregarProducto cargarProveedores={cargarProveedores}/>
 
         {/* Modal Editar proveedor */}
-        <ModalEditarProveedor proveedor={proveedor} cargarProveedores={cargarProveedores}/>
+        {/* <ModalEditarProveedor proveedor={proveedor} cargarProveedores={cargarProveedores}/> */}
 
     </div>
   )

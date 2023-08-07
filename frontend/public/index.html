@@ -40,6 +40,10 @@
     <link rel="stylesheet" href="%PUBLIC_URL%/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="%PUBLIC_URL%/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+     <!-- Select2 -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -97,6 +101,14 @@
     <script src="%PUBLIC_URL%/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="%PUBLIC_URL%/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="%PUBLIC_URL%/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    
+
+    <!-- Select2 -->
+    <script src="%PUBLIC_URL%/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+      $(function(){
+        
+        $('.select2').select2()
+      })
+    </script>
   </body>
 </html>
