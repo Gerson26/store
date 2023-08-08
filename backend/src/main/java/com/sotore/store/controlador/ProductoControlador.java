@@ -1,6 +1,7 @@
 package com.sotore.store.controlador;
 
 import com.sotore.store.modelo.Producto;
+import com.sotore.store.modelo.Proveedor;
 import com.sotore.store.servicio.ProductoServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,12 @@ public class ProductoControlador {
 
     @PostMapping("/producto")
     public Producto agregarProducto(@RequestBody Producto producto){
-        logger.info("Proveedor a agregar: " + producto);
+        logger.info("Producto a agregar: " + producto);
+
+        Proveedor proveedor = new Proveedor();
+        proveedor.setIdProveedor(1);
+
+        producto.setProveedor(proveedor);
         return productoServicio.guardarProducto(producto);
     }
 }
