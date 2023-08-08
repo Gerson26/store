@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { request } from '../../axios_helper';
 import Swal from 'sweetalert2';
 import $ from 'jquery'; 
-import PruebaSelect from './PruebaSelect';
-
-
-
 
 export default function ModalAgregarProducto(props) {
 
@@ -55,24 +51,24 @@ export default function ModalAgregarProducto(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         console.log(producto);
-        // await request(
-        //     "POST",
-        //     "/proveedor",
-        //     proveedor
-        // ).then((response) => {
-        //     console.log(response);
-        //     props.cargarProveedores();
-        //     setProveedor(initialProveedorState);
-        //     //Proveedor Creado
-        //     Toast.fire({
-        //         icon: 'success',
-        //         title: 'Proveedor creado correctamente.'
-        //     })
-        //     document.querySelector('.close-modal').click();
+        await request(
+            "POST",
+            "/producto",
+            producto
+        ).then((response) => {
+            console.log(response);
+            props.cargarProveedores();
+            setProducto(initialProductoState);
+            //Proveedor Creado
+            Toast.fire({
+                icon: 'success',
+                title: 'Producto creado correctamente.'
+            })
+            document.querySelector('.close-modal').click();
 
-        // }).catch((error) => {
-        //     console.log(error);
-        // })
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     //Sweet alert configuration
@@ -96,7 +92,7 @@ export default function ModalAgregarProducto(props) {
                             <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <PruebaSelect />
+                        
                         <div className="modal-body">                            
                             <div className="mb-3">
                                 <label htmlFor="nombreProducto" className="form-label">Nombre</label>
