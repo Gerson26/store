@@ -8,7 +8,7 @@ export default function ModalAgregarProducto(props) {
 
     const initialProductoState = {
         nombreProducto:"",
-        statusProducto: "0",
+        statusProducto: 0,
         idProveedor: ""
     }
     
@@ -31,7 +31,7 @@ export default function ModalAgregarProducto(props) {
 
     const onCheckChange = (e) => {
         //spread operator ...(expandir los eventos)
-        const status = e.target.checked === true ? '1' : '0';
+        const status = e.target.checked === true ? 1 : 0;
         setProducto({...producto,statusProducto: status});
     }
 
@@ -113,7 +113,7 @@ export default function ModalAgregarProducto(props) {
 
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                 <input type="checkbox" class="custom-control-input" id="statusProducto" name="statusProducto"  onChange={(e)=>onCheckChange(e)}/>
-                                <label class="custom-control-label" htmlFor="statusProducto">{producto.statusProducto == '1' ? 'Habilitado' : 'Deshabilitado'}</label>
+                                <label class="custom-control-label" htmlFor="statusProducto">{producto.statusProducto === 1 ? 'Habilitado' : 'Deshabilitado'}</label>
                             </div>
                             
                         </div>

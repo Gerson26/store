@@ -22,6 +22,7 @@ public class ProductoControlador {
     @Autowired
     //si no funciona lo dejamos con IProveedorServicio
     private ProductoServicio productoServicio;
+    @Autowired
     private ProveedorServicio proveedorServicio;
 
     @PostMapping("/producto/{proveedorId}")
@@ -35,7 +36,6 @@ public class ProductoControlador {
             producto.setProveedor(proveedor);
             return productoServicio.guardarProducto(producto);
         }
-
     }
 
 }
