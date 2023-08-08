@@ -52,9 +52,10 @@ export default function ModalAgregarProducto(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         console.log(producto);
+        // console.log(producto.idProveedor)
         await request(
             "POST",
-            "/producto",
+            `producto/${producto.idProveedor}`,
             producto
         ).then((response) => {
             console.log(response);

@@ -1,8 +1,10 @@
 package com.sotore.store.controlador;
 
+import com.sotore.store.excepcion.RecursoNoEncontradoExcepcion;
 import com.sotore.store.modelo.Producto;
 import com.sotore.store.modelo.Proveedor;
 import com.sotore.store.servicio.ProductoServicio;
+import com.sotore.store.servicio.ProveedorServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +22,20 @@ public class ProductoControlador {
     @Autowired
     //si no funciona lo dejamos con IProveedorServicio
     private ProductoServicio productoServicio;
+    private ProveedorServicio proveedorServicio;
 
-    @PostMapping("/producto")
-    public Producto agregarProducto(@RequestBody Producto producto){
-        logger.info("Producto a agregar: " + producto);
+    @PostMapping("/producto/{proveedorId}")
+    public Producto agregarProducto(@PathVariable(value = "proveedorId") Integer proveedorId, @RequestBody Producto producto){
+        logger.info("Producto a agregar: " + producto + proveedorId);
 
-        Proveedor proveedor = new Proveedor();
-        proveedor.setIdProveedor(1);
+        Proveedor proveedor = proveedorServicio.buscarProveedorPorId(proveedorId);
+        if (proveedor == null) {
+            throw new RecursoNoEncontradoExcepcion("No se encontro el proveedor con el id: " + proveedorId);
+        }else {
+            producto.setProveedor(proveedor);
+            return productoServicio.guardarProducto(producto);
+        }
 
-        producto.setProveedor(proveedor);
-        return productoServicio.guardarProducto(producto);
     }
+
 }
