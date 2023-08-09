@@ -85,8 +85,8 @@ export default function ModalEditarProducto(props) {
                             
 
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                <input type="checkbox" class="custom-control-input" id="statusProducto" name="statusProducto" checked={statusProducto == 1 }  onChange={(e)=>onCheckChange(e)}/>
-                                <label class="custom-control-label" htmlFor="statusProducto">{statusProducto == 1 ? 'Habilitado' : 'Deshabilitado'}</label>
+                                <input type="checkbox" class="custom-control-input" id="statusProductoEdit" name="statusProducto" checked={statusProducto == 1 }  onChange={(e)=>onCheckChange(e)}/>
+                                <label class="custom-control-label" htmlFor="statusProductoEdit">{statusProducto == 1 ? 'Habilitado' : 'Deshabilitado'}</label>
                             </div>
                             
                         </div>
