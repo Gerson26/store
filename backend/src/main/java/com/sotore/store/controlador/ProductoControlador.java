@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/store") //puede que se tenga que configurar diferente si se utiliza el jwt
@@ -24,6 +24,43 @@ public class ProductoControlador {
     private ProductoServicio productoServicio;
     @Autowired
     private ProveedorServicio proveedorServicio;
+
+    @GetMapping("/productos")
+    public List<Producto> obtenerProductos(){
+        var productos = productoServicio.listarProductos();
+        productos.forEach(producto -> {
+          logger.info(producto.toString());
+          //producto.getProveedor().setNombreProveedor(producto.getProveedor().getNombreProveedor());
+            producto.setProveedor(proveedorServicio.buscarProveedorPorId(producto.getProveedor().getIdProveedor()));
+        });
+        return productos;
+    }
+
+   /* @GetMapping("/productos")
+    public List<Map<String, Object>> obtenerProductosConProveedor(){
+        var productos = productoServicio.listarProductos();
+        List<Map<String, Object>> productosConProveedor = new ArrayList<>();
+
+        for (Producto producto : productos) {
+            Map<String, Object> productoConProveedor = new HashMap<>();
+
+            productoConProveedor.put("idProducto", producto.getIdProducto());
+            productoConProveedor.put("nombreProducto", producto.getNombreProducto());
+            productoConProveedor.put("imagenProducto", producto.getImagenProducto());
+            productoConProveedor.put("statusProducto", producto.getStatusProducto());
+
+            Proveedor proveedor = producto.getProveedor();
+            Map<String, Object> proveedorMap = new HashMap<>();
+            proveedorMap.put("idProveedor", proveedor.getIdProveedor()); // Asume que existe un método getIdProveedor() en la clase Proveedor
+            proveedorMap.put("nombreProveedor", proveedor.getNombreProveedor()); // Asume que existe un método getNombreProveedor() en la clase Proveedor
+
+            productoConProveedor.put("Proveedor", proveedorMap);
+
+            productosConProveedor.add(productoConProveedor);
+        }
+
+        return productosConProveedor;
+    }*/
 
     @PostMapping("/producto/{proveedorId}")
     public Producto agregarProducto(@PathVariable(value = "proveedorId") Integer proveedorId, @RequestBody Producto producto){
