@@ -23,4 +23,15 @@ public class ProductoServicio implements IProductoServicio {
     public List<Producto> listarProductos() {
         return productoRespositorio.findAll();
     }
+
+    @Override
+    public Producto buscarProductoPorId(Integer idProductor) {
+        Producto producto = productoRespositorio.findById(idProductor).orElse(null);
+        return producto;
+    }
+
+    @Override
+    public void eliminarProducto(Producto producto) {
+        productoRespositorio.delete(producto);
+    }
 }

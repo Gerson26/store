@@ -12,36 +12,22 @@ import ModalAgregarProducto from './ModalAgregarProducto';
 export default function ListadoProductos(props) {
 
 
-    //useSatate para listar proveedores
-    const [proveedores, setProveedores] = useState ([]);
+    //useSatate para listar productos
+    const [productos, setProductos] =useState([]);
     const [proveedor, setProveedor] = useState([]);
     
        
     useEffect(() => {
-        cargarProveedores();
+        cargarProductos();
         // $("#example1").DataTable({
         //     "responsive": true, "lengthChange": false, "autoWidth": false,
         //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         // }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     },[]);
 
-    const cargarProveedores = async () => {
-        // const resultado = await axios.get('http://localhost:8080/api/v1/store/proveedores');
-        // console.log("Resultado cargar proveedores");
-        // console.log(resultado.data);
-        // setProveedores(resultado.data);
-            await request(
-                "GET",
-                "/proveedores"
-            ).then((response) => {
-                console.log(response);
-                setProveedores(response.data);
+   
+
     
-            }).catch((error) => {
-                console.log(error);
-            })
-        
-    }
 
     const cargarProveedor = async (id) => {
          //const resultado = await axios.get(`${urlBase}/${id}`);
@@ -60,6 +46,20 @@ export default function ListadoProductos(props) {
         })
     }
 
+    const cargarProductos = async () => {
+        await request(
+            "GET",
+            "/productos"
+        ).then((response) =>{
+            setProductos(response.data);
+            console.log("************Productos*******************");
+            console.log(response.data);
+            
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     const editarProveedor = async (id) =>{
         // await axios.delete(`${urlBase}/${id}`);
         // cargarEmpleados();
@@ -67,24 +67,24 @@ export default function ListadoProductos(props) {
       
     }
 
-    const onDeleteProveedor = async (id) => {
+    const onDeleteProducto = async (id) => {
         await request(
             "DELETE",
-            `proveedor/${id}`
+            `producto/${id}`
         ).then((response) => {
             console.log(response);
             Swal.fire(
                 'Eliminado!',
-                'El proveedor ha sido eliminado!.',
+                'El prodcuto ha sido eliminado!.',
                 'success'
             )
-            cargarProveedores();
+            cargarProductos();
 
         }).catch((error) => {
             console.log(error);
             Toast.fire({
                 icon: 'error',
-                title: 'Proveedor creado correctamente.'
+                title: 'Error al realizar la operacion.'
             })
         })
     }
@@ -97,10 +97,10 @@ export default function ListadoProductos(props) {
         timer: 3000
     });
 
-    const onClickDeleteProveedor = (e,id) => {
+    const onClickDeleteProducto = (e,id) => {
         e.preventDefault();
         Swal.fire({
-            title: 'Estas Seguro de Eliminar el Poveedor?',
+            title: 'Estas Seguro de Eliminar el Producto?',
             text: "No sera posible revertir la acción!",
             icon: 'warning',
             showCancelButton: true,
@@ -110,7 +110,7 @@ export default function ListadoProductos(props) {
             cancelButtonText: 'Cancelar',
           }).then((result) => {
             if (result.isConfirmed) {
-                onDeleteProveedor(id);              
+                onDeleteProducto(id);              
             }
           })
     }
@@ -162,22 +162,24 @@ export default function ListadoProductos(props) {
                             <tr>                           
                             <th>IMG</th>
                             <th>Nombre</th>
+                            <th>Proveedor</th>
                             <th>Status</th>
                             <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             
-                        {proveedores.map((proveedor, indice) => (
+                        {productos.map((producto, indice) => (
                             <tr key={indice}>
-                                <td>{proveedor.idProveedor}</td>
-                                <td>{proveedor.nombreProveedor}</td>
-                                <td>{proveedor.direccionProveedor}</td>
+                                <td>{producto.nombreProducto}</td>
+                                <td>{producto.nombreProducto}</td>
+                                <td>{producto.proveedor.nombreProveedor}</td>
+                                <td>{producto.statusProducto == 1 ? <span class="badge badge-pill badge-success">Activado</span> : <span class="badge badge-pill badge-danger">Desactivado</span>} </td>
                                 
                               
                                 <td>
-                                    <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-proveedor" onClick={()=>editarProveedor(proveedor.idProveedor)}><i class="fas far fa-edit"></i></button>
-                                    <button type="button" class="btn btn-inline-block btn-danger btn-sm" onClick={(e) => onClickDeleteProveedor(e,proveedor.idProveedor)}><i class="fas fa-trash"></i></button>
+                                    <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-proveedor" onClick={()=>editarProveedor(producto.idProducto)}><i class="fas far fa-edit"></i></button>
+                                    <button type="button" class="btn btn-inline-block btn-danger btn-sm" onClick={(e) => onClickDeleteProducto(e,producto.idProducto)}><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         ))}
@@ -197,7 +199,7 @@ export default function ListadoProductos(props) {
         </section>
 
         {/* Modal Agregar Nuevo producto */}
-        <ModalAgregarProducto cargarProveedores={cargarProveedores}/>
+        <ModalAgregarProducto cargarProductos={cargarProductos}/>
 
         {/* Modal Editar proveedor */}
         {/* <ModalEditarProveedor proveedor={proveedor} cargarProveedores={cargarProveedores}/> */}

@@ -1,6 +1,8 @@
 package com.sotore.store.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,9 +28,9 @@ public class Producto {
     String imagenProducto;
     String statusProducto;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "idProveedorFk", referencedColumnName = "idProveedor", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+    //@JsonIgnore //si dejo esta notacion y en el FecthType.LAZY solo me devuelve el objeto de procutos sin relacion pero puedo hacer que el json que quiera se cree en el controlador con DTO
     private Proveedor proveedor;
 }

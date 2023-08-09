@@ -11,4 +11,8 @@ public interface IProductoServicio {
     public Producto guardarProducto(Producto producto);
 
     public List<Producto> listarProductos();
+
+    public Producto buscarProductoPorId(Integer idProducto);
+
+    public void eliminarProducto(Producto producto);
 }

@@ -8,6 +8,7 @@ import com.sotore.store.servicio.ProveedorServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -30,13 +31,12 @@ public class ProductoControlador {
         var productos = productoServicio.listarProductos();
         productos.forEach(producto -> {
           logger.info(producto.toString());
-          //producto.getProveedor().setNombreProveedor(producto.getProveedor().getNombreProveedor());
-            producto.setProveedor(proveedorServicio.buscarProveedorPorId(producto.getProveedor().getIdProveedor()));
+
         });
         return productos;
     }
 
-   /* @GetMapping("/productos")
+    /*@GetMapping("/productos")
     public List<Map<String, Object>> obtenerProductosConProveedor(){
         var productos = productoServicio.listarProductos();
         List<Map<String, Object>> productosConProveedor = new ArrayList<>();
@@ -73,6 +73,20 @@ public class ProductoControlador {
             producto.setProveedor(proveedor);
             return productoServicio.guardarProducto(producto);
         }
+    }
+
+    @DeleteMapping("/producto/{id}")
+    public ResponseEntity<Map<String, Boolean>> eliminarProducto(@PathVariable Integer id){
+        Producto producto = productoServicio.buscarProductoPorId(id);
+        if(producto == null) throw new RecursoNoEncontradoExcepcion("El id recibido no existe: "+id);
+
+        productoServicio.eliminarProducto(producto);
+        //respuesta Json{"eliminado":"true"}
+
+        Map<String, Boolean> respuesta = new HashMap<>();
+        respuesta.put("eliminado",Boolean.TRUE);
+        return ResponseEntity.ok(respuesta);
+
     }
 
 }

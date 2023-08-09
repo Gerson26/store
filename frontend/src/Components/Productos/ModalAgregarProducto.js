@@ -15,6 +15,7 @@ export default function ModalAgregarProducto(props) {
     //useState para guardar el proveedor
     const [producto, setProducto] = useState(initialProductoState);
     const [proveedores, setProveedores] = useState ([]);
+    
 
     //inicializar varibles 
     const{nombreProducto,statusProducto,idProveedor} = producto;
@@ -22,6 +23,8 @@ export default function ModalAgregarProducto(props) {
     useEffect(() => {
         cargarProveedores();
     },[])
+
+    
 
     const onInputChange = (e) => {
         //spread operator ...(expandir los eventos)
@@ -49,6 +52,8 @@ export default function ModalAgregarProducto(props) {
         
     }
 
+    
+
     const onSubmit = async (e) => {
         e.preventDefault();
         console.log(producto);
@@ -59,7 +64,7 @@ export default function ModalAgregarProducto(props) {
             producto
         ).then((response) => {
             console.log(response);
-            props.cargarProveedores();
+            props.cargarProductos();
             setProducto(initialProductoState);
             //Proveedor Creado
             Toast.fire({
