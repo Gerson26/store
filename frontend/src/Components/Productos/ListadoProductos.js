@@ -8,13 +8,14 @@ import moment from 'moment/moment';
 import 'moment/locale/es';
 import $ from 'jquery'; 
 import ModalAgregarProducto from './ModalAgregarProducto';
+import ModalEditarProducto from './ModalEditarProducto';
 
 export default function ListadoProductos(props) {
 
 
     //useSatate para listar productos
     const [productos, setProductos] =useState([]);
-    const [proveedor, setProveedor] = useState([]);
+    const [producto, setProducto] = useState([]);
     
        
     useEffect(() => {
@@ -29,17 +30,17 @@ export default function ListadoProductos(props) {
 
     
 
-    const cargarProveedor = async (id) => {
+    const cargarProducto = async (id) => {
          //const resultado = await axios.get(`${urlBase}/${id}`);
         // setEmpleado(resultado.data);
 
         await request(
             "GET",
-            `proveedor/${id}`,
+            `producto/${id}`,
         ).then((response) => {
             console.log(response);
-            setProveedor(response.data);
-            console.log(proveedor);
+            setProducto(response.data);
+            console.log(producto);
 
         }).catch((error) => {
             console.log(error);
@@ -60,10 +61,10 @@ export default function ListadoProductos(props) {
         })
     }
 
-    const editarProveedor = async (id) =>{
+    const editarProducto = async (id) =>{
         // await axios.delete(`${urlBase}/${id}`);
         // cargarEmpleados();
-        cargarProveedor(id);
+        cargarProducto(id);
       
     }
 
@@ -178,7 +179,7 @@ export default function ListadoProductos(props) {
                                 
                               
                                 <td>
-                                    <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-proveedor" onClick={()=>editarProveedor(producto.idProducto)}><i class="fas far fa-edit"></i></button>
+                                    <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-edit-producto" onClick={()=>editarProducto(producto.idProducto)}><i class="fas far fa-edit"></i></button>
                                     <button type="button" class="btn btn-inline-block btn-danger btn-sm" onClick={(e) => onClickDeleteProducto(e,producto.idProducto)}><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
@@ -201,7 +202,8 @@ export default function ListadoProductos(props) {
         {/* Modal Agregar Nuevo producto */}
         <ModalAgregarProducto cargarProductos={cargarProductos}/>
 
-        {/* Modal Editar proveedor */}
+        {/* Modal Editar producto */}
+        <ModalEditarProducto producto={producto}  cargarProductos={cargarProductos}/>
         {/* <ModalEditarProveedor proveedor={proveedor} cargarProveedores={cargarProveedores}/> */}
 
     </div>

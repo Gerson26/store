@@ -62,6 +62,14 @@ public class ProductoControlador {
         return productosConProveedor;
     }*/
 
+    @GetMapping("/producto/{id}")
+    public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable Integer id){
+        Producto producto = productoServicio.buscarProductoPorId(id);
+        if (producto == null) throw new RecursoNoEncontradoExcepcion("No se encontro el id: "+id);
+        return  ResponseEntity.ok(producto);
+
+    }
+
     @PostMapping("/producto/{proveedorId}")
     public Producto agregarProducto(@PathVariable(value = "proveedorId") Integer proveedorId, @RequestBody Producto producto){
         logger.info("Producto a agregar: " + producto + proveedorId);
@@ -73,6 +81,17 @@ public class ProductoControlador {
             producto.setProveedor(proveedor);
             return productoServicio.guardarProducto(producto);
         }
+    }
+
+    @PutMapping("/producto/{id}")
+    public ResponseEntity<Producto> actualizarProducto(@PathVariable Integer id, @RequestBody Producto productoRecibido){
+        Producto producto = productoServicio.buscarProductoPorId(id);
+        if (producto == null) throw new RecursoNoEncontradoExcepcion("El id recibido no existe: "+id);
+        producto.setNombreProducto(productoRecibido.getNombreProducto());
+        producto.setStatusProducto(productoRecibido.getStatusProducto());
+
+        productoServicio.guardarProducto(producto);
+        return ResponseEntity.ok(producto);
     }
 
     @DeleteMapping("/producto/{id}")
