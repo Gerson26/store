@@ -79,7 +79,7 @@ public class ProductoControlador {
     @PostMapping("/producto/{proveedorId}")
     public Producto agregarProducto(
             @PathVariable(value = "proveedorId") Integer proveedorId,
-            @RequestParam("imagenProducto") MultipartFile imagenProducto,
+            @RequestParam(value = "imagenProducto", required = false) MultipartFile imagenProducto,
             @RequestParam("producto") String productoJson
     ) {
         logger.info("Producto a agregar: " + productoJson + proveedorId);
@@ -93,7 +93,7 @@ public class ProductoControlador {
         } else {
             producto.setProveedor(proveedor);
 
-            if(!imagenProducto.isEmpty()){
+            if(imagenProducto != null && !imagenProducto.isEmpty()){
                 Path directorioImagenes = Paths.get("src//main//resources//static/productos");
                 String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
 

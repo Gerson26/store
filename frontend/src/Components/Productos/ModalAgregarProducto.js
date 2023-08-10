@@ -138,7 +138,7 @@ export default function ModalAgregarProducto(props) {
                             <div class="form-group mt-3">
                                 <div className="">
                                     <input type="file" className="" id="imagenProducto" name="imagenProducto" onChange={(e) => selectImagen(e)} />
-                                    <label className="" htmlFor="imagenProducto">subir imagen</label>
+                                    <label className="" htmlFor="imagenProducto"></label>
                                 </div>
                             </div>
                             
