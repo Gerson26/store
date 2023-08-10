@@ -1,5 +1,6 @@
 package com.sotore.store.controlador;
 
+import com.google.gson.Gson;
 import com.sotore.store.excepcion.RecursoNoEncontradoExcepcion;
 import com.sotore.store.modelo.Producto;
 import com.sotore.store.modelo.Proveedor;
@@ -10,7 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
@@ -71,14 +77,40 @@ public class ProductoControlador {
     }
 
     @PostMapping("/producto/{proveedorId}")
-    public Producto agregarProducto(@PathVariable(value = "proveedorId") Integer proveedorId, @RequestBody Producto producto){
-        logger.info("Producto a agregar: " + producto + proveedorId);
+    public Producto agregarProducto(
+            @PathVariable(value = "proveedorId") Integer proveedorId,
+            @RequestParam("imagenProducto") MultipartFile imagenProducto,
+            @RequestParam("producto") String productoJson
+    ) {
+        logger.info("Producto a agregar: " + productoJson + proveedorId);
+
+        // Convert the JSON string to a Producto object using Jackson or other JSON library
+        Producto producto = new Gson().fromJson(productoJson, Producto.class);
 
         Proveedor proveedor = proveedorServicio.buscarProveedorPorId(proveedorId);
         if (proveedor == null) {
             throw new RecursoNoEncontradoExcepcion("No se encontro el proveedor con el id: " + proveedorId);
-        }else {
+        } else {
             producto.setProveedor(proveedor);
+
+            if(!imagenProducto.isEmpty()){
+                Path directorioImagenes = Paths.get("src//main//resources//static/productos");
+                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+
+                try {
+                    byte[] bytesImg = new byte[0];
+                    bytesImg = imagenProducto.getBytes();
+                    Path rutaCompleta = Paths.get(rutaAbsoluta + "//"+ imagenProducto.getOriginalFilename());
+                    //Files.createDirectories(directorioImagenes + "/" + );
+                    Files.write(rutaCompleta, bytesImg);
+                    producto.setImagenProducto(imagenProducto.getOriginalFilename());
+                } catch (IOException e) {
+                    throw new RecursoNoEncontradoExcepcion("No se pudo crear la imagen: " + imagenProducto);
+                }
+
+            }
+
             return productoServicio.guardarProducto(producto);
         }
     }

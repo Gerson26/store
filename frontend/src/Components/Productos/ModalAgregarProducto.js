@@ -15,10 +15,11 @@ export default function ModalAgregarProducto(props) {
     //useState para guardar el proveedor
     const [producto, setProducto] = useState(initialProductoState);
     const [proveedores, setProveedores] = useState ([]);
+    const [imagenProducto, setImagenProducto] = useState(null);
     
 
     //inicializar varibles 
-    const{nombreProducto,statusProducto,idProveedor} = producto;
+    const{nombreProducto,statusProducto,idProveedor, imgenProducto} = producto;
 
     useEffect(() => {
         cargarProveedores();
@@ -52,16 +53,29 @@ export default function ModalAgregarProducto(props) {
         
     }
 
+    const selectImagen = (e) => {
+        console.log(e.target.files);
+        setImagenProducto(e.target.files[0]);
+        
+
+    }
     
 
     const onSubmit = async (e) => {
+        
         e.preventDefault();
         console.log(producto);
-        // console.log(producto.idProveedor)
+        // console.log(imagenProducto);
+        const formData = new FormData();
+        formData.append('producto', JSON.stringify(producto));
+        formData.append('imagenProducto', imagenProducto);
+
+     
+        console.log(producto.idProveedor)
         await request(
             "POST",
             `producto/${producto.idProveedor}`,
-            producto
+            formData
         ).then((response) => {
             console.log(response);
             props.cargarProductos();
@@ -92,7 +106,7 @@ export default function ModalAgregarProducto(props) {
     <div className="modal fade" id="modal-default">
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <form onSubmit={(e) => onSubmit(e)}>
+                    <form onSubmit={(e) => onSubmit(e)} encType="multipart/form-data">
                         <div className="modal-header">
                             <h4 className="modal-title">Registrar Producto</h4>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -119,6 +133,13 @@ export default function ModalAgregarProducto(props) {
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                 <input type="checkbox" class="custom-control-input" id="statusProducto" name="statusProducto"  onChange={(e)=>onCheckChange(e)}/>
                                 <label class="custom-control-label" htmlFor="statusProducto">{producto.statusProducto === 1 ? 'Habilitado' : 'Deshabilitado'}</label>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <div className="">
+                                    <input type="file" className="" id="imagenProducto" name="imagenProducto" onChange={(e) => selectImagen(e)} />
+                                    <label className="" htmlFor="imagenProducto">subir imagen</label>
+                                </div>
                             </div>
                             
                         </div>
