@@ -16,6 +16,9 @@ export default function ListadoProductos(props) {
     //useSatate para listar productos
     const [productos, setProductos] =useState([]);
     const [producto, setProducto] = useState([]);
+
+    //ruta imagenes productos
+    const urlImgProducto  = "http://localhost:8080/productos"
     
        
     useEffect(() => {
@@ -158,7 +161,7 @@ export default function ListadoProductos(props) {
                     </div>
                     {/* /.card-header */}
                     <div className="card-body">
-                        <table id="example1" className="table table-bordered table-striped">
+                        <table id="tblProductos" className="table table-bordered table-striped">
                         <thead>
                             <tr>                           
                             <th>IMG</th>
@@ -172,7 +175,7 @@ export default function ListadoProductos(props) {
                             
                         {productos.map((producto, indice) => (
                             <tr key={indice}>
-                                <td>{producto.nombreProducto}</td>
+                                <td><img src={producto.nombreProducto != null && producto.imagenProducto ? urlImgProducto + '/' + producto.imagenProducto : urlImgProducto + '/no-image.jpg'} className="img-thumbnail"  style={{ width: '100px', height: '100px', 'object-fit': 'contain' }} alt={producto.nombreProducto} /></td>
                                 <td>{producto.nombreProducto}</td>
                                 <td>{producto.proveedor.nombreProveedor}</td>
                                 <td>{producto.statusProducto == 1 ? <span class="badge badge-pill badge-success">Activado</span> : <span class="badge badge-pill badge-danger">Desactivado</span>} </td>
