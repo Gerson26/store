@@ -121,6 +121,7 @@ public class ProductoControlador {
         if (producto == null) throw new RecursoNoEncontradoExcepcion("El id recibido no existe: "+id);
         producto.setNombreProducto(productoRecibido.getNombreProducto());
         producto.setStatusProducto(productoRecibido.getStatusProducto());
+        producto.setProveedor(productoRecibido.getProveedor());
 
         productoServicio.guardarProducto(producto);
         return ResponseEntity.ok(producto);

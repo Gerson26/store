@@ -41,9 +41,9 @@ export default function ListadoProductos(props) {
             "GET",
             `producto/${id}`,
         ).then((response) => {
-            console.log(response);
+            // console.log(response);
             setProducto(response.data);
-            console.log(producto);
+            // console.log(producto);
 
         }).catch((error) => {
             console.log(error);

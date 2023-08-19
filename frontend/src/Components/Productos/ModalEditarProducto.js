@@ -9,26 +9,56 @@ import $ from 'jquery';
 export default function ModalEditarProducto(props) {
     
     //useState para guardar el proveedor
-    const [prodcutoEdit, setProductoEdit] = useState([]);
+    const [productoEdit, setProductoEdit] = useState([]);
+    const [proveedores, setProveedores] = useState ([]);
+    
 
     useEffect(() => {
         setProductoEdit(props.producto);
+        cargarProveedores();
+        // console.log(productoEdit.proveedor.idProveedor);
     },[props.producto]);
 
+
+
+
     //inicializar varibles 
-    const{idProducto,nombreProducto,statusProducto} = prodcutoEdit;
+    const{idProducto,nombreProducto,statusProducto, idProveedor} = productoEdit;
+
+    // const onInputChange = (e) => {
+    //     //spread operator ...(expandir los eventos)
+    //     setProductoEdit({...productoEdit,[e.target.name]: e.target.value});
+    //     console.log(productoEdit);
+
+    // }
 
     const onInputChange = (e) => {
-        //spread operator ...(expandir los eventos)
-        setProductoEdit({...prodcutoEdit,[e.target.name]: e.target.value});
-        console.log(prodcutoEdit);
+        const { name, value } = e.target;
+    
+        // Si estás actualizando el idProveedor, puedes hacer algo como esto:
+        if (name === 'idProveedor') {
+            setProductoEdit(prevProductoEdit => ({
+                ...prevProductoEdit,
+                proveedor: {
+                    ...prevProductoEdit.proveedor,
+                    idProveedor: value
+                }
+            }));
+        } else {
+            setProductoEdit(prevProductoEdit => ({
+                ...prevProductoEdit,
+                [name]: value
+            }));
+        }
 
-    }
+        console.log(productoEdit);
+    };
+
 
     const onCheckChange = (e) => {
         //spread operator ...(expandir los eventos)
         const status = e.target.checked === true ? 1 : 0;
-        setProductoEdit({...prodcutoEdit,statusProducto: status});
+        setProductoEdit({...productoEdit,statusProducto: status});
     }
 
 
@@ -38,7 +68,7 @@ export default function ModalEditarProducto(props) {
         await request(
             "PUT",
             `producto/${id}`,
-            prodcutoEdit
+            productoEdit
         ).then((response) => {
             console.log(response);
             props.cargarProductos();
@@ -53,6 +83,18 @@ export default function ModalEditarProducto(props) {
         }).catch((error) => {
             console.log(error);
         })
+    }
+    
+    const cargarProveedores = async () => {
+        await request(
+            "GET",
+            "/proveedores"
+        ).then((response) => {
+            setProveedores(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
+    
     }
 
    
@@ -79,8 +121,18 @@ export default function ModalEditarProducto(props) {
                         
                         <div className="modal-body">                            
                             <div className="mb-3">
-                                <label htmlFor="nombreProducto" className="form-label">Nombre</label>
+                                <label htmlFor="nombreProducto" className="form-label">Nombre </label>
                                 <input type="text" className="form-control" id="nombreProducto" name="nombreProducto" required={true} value={nombreProducto || ''} onChange={(e)=>onInputChange(e)}/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Proveedor </label>
+                                <select class="form-control" style={{width: '100%'}} id="idProveedor" name="idProveedor" required={true} value={idProveedor} onChange={(e)=>onInputChange(e)}>
+                                <option>Selecciona un Proveedor</option>
+                                {proveedores.map((proveedor, indice) => (
+                                    <option key={indice} value={proveedor.idProveedor} selected={productoEdit?.proveedor?.idProveedor === proveedor.idProveedor}>{proveedor.nombreProveedor}</option>
+                                ))}
+                                </select>
                             </div>
                             
 
