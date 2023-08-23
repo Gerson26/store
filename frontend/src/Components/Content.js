@@ -4,6 +4,7 @@ import ListadoProvedores from "./Proveedores/ListadoProveedores";
 import Aside from "./Aside";
 import Prueba from "./Proveedores/Prueba";
 import ListadoProductos from "./Productos/ListadoProductos";
+import ListadoCategorias from "./Categorias/ListadoCategorias";
 
 export default function Content() {
   return (
@@ -13,6 +14,7 @@ export default function Content() {
             <Route exact path='/provedores' element={<ListadoProvedores title="Proveedores"/>} />
             <Route exact path='/productos' element={<ListadoProductos title="Productos"/>} />
             <Route exact path='/agregar' element={<ListadoProvedores />} />
+            <Route exact path='/categorias' element={<ListadoCategorias  title="Categorias"/>}  />
         </Routes>
     </div>
   )
