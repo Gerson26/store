@@ -167,6 +167,7 @@ export default function ListadoProductos(props) {
                             <th>IMG</th>
                             <th>Nombre</th>
                             <th>Proveedor</th>
+                            <th>Categoria</th>
                             <th>Status</th>
                             <th>Acciones</th>
                             </tr>
@@ -178,6 +179,7 @@ export default function ListadoProductos(props) {
                                 <td><img src={producto.nombreProducto != null && producto.imagenProducto ? urlImgProducto + '/' + producto.imagenProducto : urlImgProducto + '/no-image.jpg'} className="img-thumbnail"  style={{ width: '100px', height: '100px', 'object-fit': 'contain' }} alt={producto.nombreProducto} /></td>
                                 <td>{producto.nombreProducto}</td>
                                 <td>{producto.proveedor.nombreProveedor}</td>
+                                <td>{producto.categoria.nombreCategoria}</td>
                                 <td>{producto.statusProducto == 1 ? <span class="badge badge-pill badge-success">Activado</span> : <span class="badge badge-pill badge-danger">Desactivado</span>} </td>
                                 
                               

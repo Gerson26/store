@@ -1,21 +1,18 @@
 import React, {  useState, useEffect  } from 'react'
 import { request } from '../../axios_helper';
 import Swal from 'sweetalert2';
-import $ from 'jquery'; 
-
-
-
 
 export default function ModalEditarProducto(props) {
     
     //useState para guardar el proveedor
     const [productoEdit, setProductoEdit] = useState([]);
     const [proveedores, setProveedores] = useState ([]);
-    
+    const [categorias, setCategorias] =useState([]);
 
     useEffect(() => {
         setProductoEdit(props.producto);
         cargarProveedores();
+        cargarCategorias();
         // console.log(productoEdit.proveedor.idProveedor);
     },[props.producto]);
 
@@ -23,7 +20,7 @@ export default function ModalEditarProducto(props) {
 
 
     //inicializar varibles 
-    const{idProducto,nombreProducto,statusProducto, idProveedor} = productoEdit;
+    const{idProducto,nombreProducto,statusProducto, idProveedor,idCategoria} = productoEdit;
 
     // const onInputChange = (e) => {
     //     //spread operator ...(expandir los eventos)
@@ -44,7 +41,16 @@ export default function ModalEditarProducto(props) {
                     idProveedor: value
                 }
             }));
-        } else {
+        }else if(name === 'idCategoria') {
+            setProductoEdit(prevProductoEdit => ({
+                ...prevProductoEdit,
+                categoria: {
+                    ...prevProductoEdit.categoria,
+                    idCategoria: value
+                }
+            }));
+        }
+        else {
             setProductoEdit(prevProductoEdit => ({
                 ...prevProductoEdit,
                 [name]: value
@@ -95,8 +101,20 @@ export default function ModalEditarProducto(props) {
             console.log(error);
         })
     
+        
     }
 
+    const cargarCategorias = async () => {
+        await request(
+            "GET",
+            "/categorias"
+        ).then((response) => {
+            setCategorias(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
+    
+    }
    
 
     //Sweet alert configuration
@@ -131,6 +149,16 @@ export default function ModalEditarProducto(props) {
                                 <option>Selecciona un Proveedor</option>
                                 {proveedores.map((proveedor, indice) => (
                                     <option key={indice} value={proveedor.idProveedor} selected={productoEdit?.proveedor?.idProveedor === proveedor.idProveedor}>{proveedor.nombreProveedor}</option>
+                                ))}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Categoria </label>
+                                <select class="form-control" style={{width: '100%'}} id="idCategoria" name="idCategoria" required={true} value={idCategoria} onChange={(e)=>onInputChange(e)}>
+                                <option>Selecciona un Proveedor</option>
+                                {categorias.map((categoria, indice) => (
+                                    <option key={indice} value={categoria.idCategoria} selected={productoEdit?.categoria?.idCategoria === categoria.idCategoria}>{categoria.nombreCategoria}</option>
                                 ))}
                                 </select>
                             </div>

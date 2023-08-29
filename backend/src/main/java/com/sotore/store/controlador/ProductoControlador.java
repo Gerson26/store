@@ -2,8 +2,10 @@ package com.sotore.store.controlador;
 
 import com.google.gson.Gson;
 import com.sotore.store.excepcion.RecursoNoEncontradoExcepcion;
+import com.sotore.store.modelo.Categoria;
 import com.sotore.store.modelo.Producto;
 import com.sotore.store.modelo.Proveedor;
+import com.sotore.store.servicio.CategoriaServicio;
 import com.sotore.store.servicio.ProductoServicio;
 import com.sotore.store.servicio.ProveedorServicio;
 import org.slf4j.Logger;
@@ -31,6 +33,8 @@ public class ProductoControlador {
     private ProductoServicio productoServicio;
     @Autowired
     private ProveedorServicio proveedorServicio;
+    @Autowired
+    private CategoriaServicio categoriaServicio;
 
     @GetMapping("/productos")
     public List<Producto> obtenerProductos(){
@@ -76,9 +80,10 @@ public class ProductoControlador {
 
     }
 
-    @PostMapping("/producto/{proveedorId}")
+    @PostMapping("/producto/{proveedorId}/{categoriaId}")
     public Producto agregarProducto(
             @PathVariable(value = "proveedorId") Integer proveedorId,
+            @PathVariable(value = "categoriaId") Integer categoriaId,
             @RequestParam(value = "imagenProducto", required = false) MultipartFile imagenProducto,
             @RequestParam("producto") String productoJson
     ) {
@@ -88,10 +93,16 @@ public class ProductoControlador {
         Producto producto = new Gson().fromJson(productoJson, Producto.class);
 
         Proveedor proveedor = proveedorServicio.buscarProveedorPorId(proveedorId);
+
+        Categoria categoria = categoriaServicio.buscarCategoriaPorId(categoriaId);
+        
         if (proveedor == null) {
             throw new RecursoNoEncontradoExcepcion("No se encontro el proveedor con el id: " + proveedorId);
-        } else {
+        } else if(categoria == null){
+            throw new RecursoNoEncontradoExcepcion("No se encontro la categoria con el id: " + categoriaId);
+        } else{
             producto.setProveedor(proveedor);
+            producto.setCategoria(categoria);
 
             if(imagenProducto != null && !imagenProducto.isEmpty()){
                 Path directorioImagenes = Paths.get("src//main//resources//static/productos");
@@ -122,6 +133,7 @@ public class ProductoControlador {
         producto.setNombreProducto(productoRecibido.getNombreProducto());
         producto.setStatusProducto(productoRecibido.getStatusProducto());
         producto.setProveedor(productoRecibido.getProveedor());
+        producto.setCategoria(productoRecibido.getCategoria());
 
         productoServicio.guardarProducto(producto);
         return ResponseEntity.ok(producto);

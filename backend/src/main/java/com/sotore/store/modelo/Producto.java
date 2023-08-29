@@ -33,4 +33,9 @@ public class Producto {
     @OnDelete(action = OnDeleteAction.CASCADE)
     //@JsonIgnore //si dejo esta notacion y en el FecthType.LAZY solo me devuelve el objeto de procutos sin relacion pero puedo hacer que el json que quiera se cree en el controlador con DTO
     private Proveedor proveedor;
+
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @JoinColumn(name = "idCategoriaFk" , referencedColumnName = "idCategoria", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Categoria categoria;
 }

@@ -9,20 +9,23 @@ export default function ModalAgregarProducto(props) {
     const initialProductoState = {
         nombreProducto:"",
         statusProducto: 0,
-        idProveedor: ""
+        idProveedor: "",
+        idCategoria: ""
     }
     
     //useState para guardar el proveedor
     const [producto, setProducto] = useState(initialProductoState);
     const [proveedores, setProveedores] = useState ([]);
     const [imagenProducto, setImagenProducto] = useState(null);
+    const [categorias, setCategorias] =useState([]);
     
 
     //inicializar varibles 
-    const{nombreProducto,statusProducto,idProveedor, imgenProducto} = producto;
+    const{nombreProducto,statusProducto,idProveedor, imgenProducto, idCategoria} = producto;
 
     useEffect(() => {
         cargarProveedores();
+        cargarCategorias();
     },[])
 
     
@@ -53,6 +56,18 @@ export default function ModalAgregarProducto(props) {
         
     }
 
+    const cargarCategorias = async () => {
+        await request(
+            "GET",
+            "/categorias"
+        ).then((response) => {
+            setCategorias(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
+    
+    }
+
     const selectImagen = (e) => {
         console.log(e.target.files);
         setImagenProducto(e.target.files[0]);
@@ -74,7 +89,7 @@ export default function ModalAgregarProducto(props) {
         console.log(producto.idProveedor)
         await request(
             "POST",
-            `producto/${producto.idProveedor}`,
+            `producto/${producto.idProveedor}/${producto.idCategoria}`,
             formData
         ).then((response) => {
             console.log(response);
@@ -126,6 +141,16 @@ export default function ModalAgregarProducto(props) {
                                 <option>Selecciona un Proveedor</option>
                                 {proveedores.map((proveedor, indice) => (
                                     <option key={indice} value={proveedor.idProveedor}>{proveedor.nombreProveedor}</option>
+                                ))}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Categoria </label>
+                                <select class="form-control" style={{width: '100%'}} id="idCategoria" name="idCategoria" required={true} value={idCategoria} onChange={(e)=>onInputChange(e)}>
+                                <option>Selecciona una Categoria</option>
+                                {categorias.map((categoria, indice) => (
+                                    <option key={indice} value={categoria.idCategoria}>{categoria.nombreCategoria}</option>
                                 ))}
                                 </select>
                             </div>
