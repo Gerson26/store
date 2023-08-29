@@ -17,4 +17,15 @@ public class CategoriaServicio implements ICategoriaServicio {
     public List<Categoria> listarCategorias(){
         return categoriaRepositorio.findAll();
     }
+
+    @Override
+    public Categoria guardarCategoria(Categoria categoria){
+        return categoriaRepositorio.save(categoria);
+    }
+
+    @Override
+    public  Categoria buscarCategoriaPorId(Integer idCategoria){
+        Categoria categoria = categoriaRepositorio.findById(idCategoria).orElse(null);
+        return categoria;
+    }
 }
