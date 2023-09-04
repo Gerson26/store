@@ -124,6 +124,21 @@ export default function Aside() {
                 </p>
                 </Link>
               </li>
+
+              <li className="nav-item">
+                {/* <a href="/provedores" className="nav-link">
+                  <i className="nav-icon far fa-image" />
+                  <p>
+                    Gallery
+                  </p>
+                </a> */}
+                <Link className="nav-link"  to="/compras">
+                <i className="nav-icon far fa-image" />
+                <p>
+                  Compras
+                </p>
+                </Link>
+              </li>
               
               
             </ul>
