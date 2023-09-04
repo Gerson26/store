@@ -95,7 +95,7 @@ public class ProductoControlador {
         Proveedor proveedor = proveedorServicio.buscarProveedorPorId(proveedorId);
 
         Categoria categoria = categoriaServicio.buscarCategoriaPorId(categoriaId);
-        
+
         if (proveedor == null) {
             throw new RecursoNoEncontradoExcepcion("No se encontro el proveedor con el id: " + proveedorId);
         } else if(categoria == null){

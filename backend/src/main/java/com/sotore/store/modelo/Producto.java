@@ -11,6 +11,7 @@ import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -27,6 +28,8 @@ public class Producto {
     String nombreProducto;
     String imagenProducto;
     String statusProducto;
+    private BigDecimal precioProducto;
+    Integer stockProducto;
 
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "idProveedorFk", referencedColumnName = "idProveedor", nullable = false)

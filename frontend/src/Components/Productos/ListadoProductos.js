@@ -168,6 +168,8 @@ export default function ListadoProductos(props) {
                             <th>Nombre</th>
                             <th>Proveedor</th>
                             <th>Categoria</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
                             <th>Status</th>
                             <th>Acciones</th>
                             </tr>
@@ -180,6 +182,8 @@ export default function ListadoProductos(props) {
                                 <td>{producto.nombreProducto}</td>
                                 <td>{producto.proveedor.nombreProveedor}</td>
                                 <td>{producto.categoria.nombreCategoria}</td>
+                                <td>$ {producto.precioProducto}</td>
+                                <td>{producto.stockProducto}</td>
                                 <td>{producto.statusProducto == 1 ? <span class="badge badge-pill badge-success">Activado</span> : <span class="badge badge-pill badge-danger">Desactivado</span>} </td>
                                 
                               

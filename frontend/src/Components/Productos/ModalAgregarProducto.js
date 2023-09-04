@@ -21,7 +21,7 @@ export default function ModalAgregarProducto(props) {
     
 
     //inicializar varibles 
-    const{nombreProducto,statusProducto,idProveedor, imgenProducto, idCategoria} = producto;
+    const{nombreProducto,statusProducto,idProveedor, imgenProducto, idCategoria, precioProducto, stockProducto} = producto;
 
     useEffect(() => {
         cargarProveedores();
@@ -153,6 +153,16 @@ export default function ModalAgregarProducto(props) {
                                     <option key={indice} value={categoria.idCategoria}>{categoria.nombreCategoria}</option>
                                 ))}
                                 </select>
+                            </div>
+
+                            <div className="mb-3">
+                                <label htmlFor="precioProducto" className="form-label">Precio</label>
+                                <input type="number" className="form-control" id="precioProducto" name="precioProducto" step="0.01" min="0.01" required={true} value={precioProducto} onChange={(e)=>onInputChange(e)}/>
+                            </div>
+
+                            <div className="mb-3">
+                                <label htmlFor="stockProducto" className="form-label">Stock</label>
+                                <input type="number" className="form-control" id="stockProducto" name="stockProducto" required={true} value={stockProducto} onChange={(e)=>onInputChange(e)}/>
                             </div>
 
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
