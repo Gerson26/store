@@ -63,6 +63,7 @@ export default function ListadoCompras(props) {
                                                 <th># compra</th>
                                                 <th>Fecha</th>
                                                 <th>Proveedor</th>
+                                                <th>Monto</th>
                                                 <th>Detalles</th>
                                             </tr>
                                         </thead>
@@ -74,7 +75,7 @@ export default function ListadoCompras(props) {
                                                 <td>{compra.idCompra}</td>
                                                 <td>{moment(new Date(compra.fechaCompra)).format('LLL')}</td>
                                                 <td>{compra.proveedor.nombreProveedor}</td>
-                                                
+                                                <td></td>
                                             
                                                 <td>
                                                     <button type="button" class="btn btn-inline-block btn-warning btn-sm mr-2" data-toggle="modal" data-target="#modal-add-compra" ><i class="fas far fa-edit"></i></button>
