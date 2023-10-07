@@ -68,19 +68,22 @@ export default function ModalAgregarCompra(props) {
     };
 
     const handleInputChange = (index, field, value) => {
-        const newDetallecompra = [...detalleCompra];
-        newDetallecompra[index][field] = value;
-        setDetalleCompra(newDetallecompra);
+        let total;//se crea la variable para contener el total
+        const newDetallecompra = [...detalleCompra]; // se crea el nuevo json a setear
+        newDetallecompra[index][field] = value; // index es el indice el objeto en el array, field es el nombre del campo, y value el valor del contenido               
 
+        //validacion para saber por que se va a multiolicar
         if(field == 'cantidad'){
-            alert("se preciono cantidad")
+            total = value * detalleCompra[index].precio_unitario;
+            
         }else if(field == 'precio_unitario'){
-            alert("se presiono precio_unitario")
+            total = value * detalleCompra[index].cantidad;           
         }
-
-        console.log(index);
-        console.log(field);
-        console.log(value)
+        //se agrega el valor del total
+        newDetallecompra[index].total = total;
+        //se setea al esdtado
+        setDetalleCompra(newDetallecompra);
+       
     };
 
     const handleDeleteItems = (index) => {
